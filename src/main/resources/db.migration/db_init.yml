@@ -1,0 +1,160 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: marekk
+      changes:
+        - createTable:
+            tableName: customer
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: creation_time
+                  type: datetime
+              - column:
+                  name: uuid
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: loan
+            columns:
+            - column:
+                name: id
+                type: int
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: amount
+                type: decimal(19,2)
+                constraints:
+                  nullable: false
+            - column:
+                name: start_date
+                type: date
+                constraints:
+                  nullable: false
+            - column:
+                name: due_date
+                type: date
+                constraints:
+                  nullable: false
+            - column:
+                name: interest_rate
+                type: decimal(19,2)
+                constraints:
+                  nullable: false
+            - column:
+                name: uuid
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: customer_full_name
+                type: varchar(101)
+                constraints:
+                  nullable: false
+            - column:
+                name: customer_email
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: customer_identity_no
+                type: varchar(50)
+                constraints:
+                  nullable: false
+                  foreignKeyName: fk_customer
+                  references: customer(uuid)
+            - column:
+                  name: version
+                  type: int
+                  constraints:
+                    nullable: false
+            - column:
+                  name: creation_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: loan_extension
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: duration
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: interest_rate
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: due_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: uuid
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: loan_id
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loan
+                    references: loan(uuid)
+        - createView:
+              catalogName: loan_snapshot
+              replaceIfExists: true
+              selectQuery: select loan.uuid as loan_id, loan.amount, loan.interest_rate, loan.due_date, loan.creation_time as creation_date, customer_identity_no, customer_full_name, customer_email, loan_extension.interest_rate as ext_interest_rate, loan_extension.due_date as ext_due_date,loan_extension.creation_time as ext_creation_time from loan left join loan_extension on loan.uuid = loan_extension.loan_id
+              viewName: loan_snapshot
+
+

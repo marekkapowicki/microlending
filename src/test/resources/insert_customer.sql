@@ -1,0 +1,1 @@
+INSERT INTO customer (id, creation_time, uuid, version, email, first_name, last_name) VALUES (1, '2017-02-01', 1, 1, 'mk@gmail.com', 'marek', 'kapowicki')

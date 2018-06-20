@@ -1,0 +1,10 @@
+loan.maxPerIp: 3
+loan.maxAmount: 10000
+loan.riskyHours: 0-6
+loan.initialFactor: 1.1
+extension.interest-multiplier: 1.5
+extension.plus-days: 7
+
+logging.level.org.hibernate.type.descriptor.sql: trace
+
+
