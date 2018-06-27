@@ -30,10 +30,10 @@ class CustomerControllerITSpec extends BaseSpringBootITSpec {
             customerFacade.retrieve(_ as Pageable) >> new PageImpl<>(newArrayList(CustomerExamples.MAREK_SNAPSHOT))
         expect:
             when()
-                    .get(ROOT + "/customers")
-                    .then()
-                    .body("numberOfElements", equalTo(1))
-                    .statusCode(HttpStatus.SC_OK)
+                .get(ROOT + "/customers")
+            .then()
+                .body("numberOfElements", equalTo(1))
+                .statusCode(HttpStatus.SC_OK)
     }
 
     def 'should receive customer details when customer exists'() {
@@ -42,15 +42,15 @@ class CustomerControllerITSpec extends BaseSpringBootITSpec {
             customerFacade.retrieve(existingId) >> CustomerExamples.MAREK_SNAPSHOT
         expect:
             given()
-                    .pathParam("customerId", existingId)
-                    .when()
-                    .get(ROOT + "/customers/{customerId}")
-                    .then()
-                    .statusCode(HttpStatus.SC_OK)
-                    .contentType(API_CONTENT_TYPE)
-                    .body("identityNo", notNullValue()).and()
-                    .body("fullName", notNullValue()).and()
-                    .body("email", notNullValue())
+                .pathParam("customerId", existingId)
+            .when()
+                .get(ROOT + "/customers/{customerId}")
+            .then()
+                .statusCode(HttpStatus.SC_OK)
+                .contentType(API_CONTENT_TYPE)
+                .body("identityNo", notNullValue()).and()
+                .body("fullName", notNullValue()).and()
+                .body("email", notNullValue())
     }
 
     def 'should return status 404 during retrieving by id when customer does not exists'() {
@@ -59,12 +59,12 @@ class CustomerControllerITSpec extends BaseSpringBootITSpec {
             customerFacade.retrieve(wrongId) >> { throw notFound().get() }
         expect:
             given()
-                    .pathParam("customerId", wrongId)
-                    .when()
-                    .get(ROOT + "/customers/{customerId}")
-                    .then()
-                    .statusCode(SC_NOT_FOUND)
-                    .contentType(API_CONTENT_TYPE)
+                .pathParam("customerId", wrongId)
+            .when()
+                .get(ROOT + "/customers/{customerId}")
+            .then()
+                .statusCode(SC_NOT_FOUND)
+                .contentType(API_CONTENT_TYPE)
     }
 
     def 'should return status 409 during registration when email exists'() {
@@ -74,12 +74,12 @@ class CustomerControllerITSpec extends BaseSpringBootITSpec {
             }
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .body(toJson(RequestExamples.CUSTOMER_CORRECT_REQUEST))
-                    .when()
-                    .post(ROOT + "/customers")
-                    .then()
-                    .statusCode(HttpStatus.SC_CONFLICT)
+                .contentType(API_CONTENT_TYPE)
+                .body(toJson(RequestExamples.CUSTOMER_CORRECT_REQUEST))
+            .when()
+                .post(ROOT + "/customers")
+            .then()
+                .statusCode(HttpStatus.SC_CONFLICT)
     }
 
     def 'should return id during customer registration'() {
@@ -88,12 +88,12 @@ class CustomerControllerITSpec extends BaseSpringBootITSpec {
             customerFacade.register(RequestExamples.CUSTOMER_CORRECT_REQUEST.toCommand()) >> createdId
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .body(toJson(RequestExamples.CUSTOMER_CORRECT_REQUEST))
-                    .when()
-                    .post(ROOT + "/customers")
-                    .then()
-                    .statusCode(HttpStatus.SC_CREATED)
-                    .body("id", equalTo(createdId))
+                .contentType(API_CONTENT_TYPE)
+                .body(toJson(RequestExamples.CUSTOMER_CORRECT_REQUEST))
+            .when()
+                .post(ROOT + "/customers")
+            .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .body("id", equalTo(createdId))
     }
 }

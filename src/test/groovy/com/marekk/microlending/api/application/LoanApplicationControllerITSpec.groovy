@@ -35,36 +35,36 @@ class LoanApplicationControllerITSpec extends BaseSpringBootITSpec {
     def "should return status 400 when required customer header is missing"() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .body(toJson(RequestExamples.APPLICATION_CORRECT_REQUEST))
-                    .when()
-                    .post(APPLICATION_PATH)
-                    .then()
-                    .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .contentType(API_CONTENT_TYPE)
+                .body(toJson(RequestExamples.APPLICATION_CORRECT_REQUEST))
+            .when()
+                .post(APPLICATION_PATH)
+            .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
     }
 
     def "should return status 404 when customer from header does not exist"() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader("notExistingCustomer"))
-                    .body(toJson(RequestExamples.APPLICATION_CORRECT_REQUEST))
-                    .when()
-                    .post(APPLICATION_PATH)
-                    .then()
-                    .statusCode(HttpStatus.SC_NOT_FOUND)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader("notExistingCustomer"))
+                .body(toJson(RequestExamples.APPLICATION_CORRECT_REQUEST))
+            .when()
+                .post(APPLICATION_PATH)
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     def "should return loanId when application is approved"() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader(CUSTOMER_ID))
-                    .body(toJson(RequestExamples.APPLICATION_CORRECT_REQUEST))
-                    .when()
-                    .post(APPLICATION_PATH)
-                    .then()
-                    .statusCode(HttpStatus.SC_CREATED)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader(CUSTOMER_ID))
+                .body(toJson(RequestExamples.APPLICATION_CORRECT_REQUEST))
+            .when()
+                .post(APPLICATION_PATH)
+            .then()
+                .statusCode(HttpStatus.SC_CREATED)
     }
 
     def "should return error status when application is rejected"() {
@@ -72,13 +72,13 @@ class LoanApplicationControllerITSpec extends BaseSpringBootITSpec {
             String rejectedRequest = toJson(new LoanApplicationCreateRequest(45, 10))
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader(CUSTOMER_ID))
-                    .body(rejectedRequest)
-                    .when()
-                    .post(APPLICATION_PATH)
-                    .then()
-                    .statusCode(HttpStatus.SC_PRECONDITION_FAILED)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader(CUSTOMER_ID))
+                .body(rejectedRequest)
+            .when()
+                .post(APPLICATION_PATH)
+            .then()
+                .statusCode(HttpStatus.SC_PRECONDITION_FAILED)
 
     }
 }

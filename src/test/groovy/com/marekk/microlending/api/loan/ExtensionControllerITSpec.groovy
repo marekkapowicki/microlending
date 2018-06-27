@@ -33,13 +33,13 @@ class ExtensionControllerITSpec extends BaseSpringBootITSpec {
     def 'should return 200 during extending existing loan'() {
         when:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader(MAREK_ID))
-                    .pathParam('loanId', MAREK_LOAN_ID)
-                    .when()
-                    .post(LOANS_PATH + '{loanId}/extension')
-                    .then()
-                    .statusCode(HttpStatus.SC_OK)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader(MAREK_ID))
+                .pathParam('loanId', MAREK_LOAN_ID)
+            .when()
+                .post(LOANS_PATH + '{loanId}/extension')
+            .then()
+                .statusCode(HttpStatus.SC_OK)
         then:
             1 * extensionFacade.extend(LoanExamples.SAMPLE)
 
@@ -48,13 +48,13 @@ class ExtensionControllerITSpec extends BaseSpringBootITSpec {
     def 'should return 404 during extending not existing loan'() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader('other client'))
-                    .pathParam('loanId', MAREK_LOAN_ID)
-                    .when()
-                    .post(LOANS_PATH + '{loanId}/extension')
-                    .then()
-                    .statusCode(HttpStatus.SC_OK)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader('other client'))
+                .pathParam('loanId', MAREK_LOAN_ID)
+            .when()
+                .post(LOANS_PATH + '{loanId}/extension')
+            .then()
+                .statusCode(HttpStatus.SC_OK)
 
     }
 }

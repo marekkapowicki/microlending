@@ -37,24 +37,24 @@ class LoanControllerITSpec extends BaseSpringBootITSpec {
     def "should return status 400 during retrieving by id when required customer header is missing"() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .pathParam('loanId', MAREK_LOAN_ID)
-                    .when()
-                    .get(ROOT + '/loans/{loanId}')
-                    .then()
-                    .statusCode(HttpStatus.SC_BAD_REQUEST)
+                .contentType(API_CONTENT_TYPE)
+                .pathParam('loanId', MAREK_LOAN_ID)
+            .when()
+                .get(ROOT + '/loans/{loanId}')
+            .then()
+                .statusCode(HttpStatus.SC_BAD_REQUEST)
     }
 
     def "should return status 404 during retrieving by id when customer from header does not exist"() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader("notExistingCustomer"))
-                    .pathParam('loanId', MAREK_LOAN_ID)
-                    .when()
-                    .get(ROOT + '/loans/{loanId}')
-                    .then()
-                    .statusCode(HttpStatus.SC_NOT_FOUND)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader("notExistingCustomer"))
+                .pathParam('loanId', MAREK_LOAN_ID)
+            .when()
+                .get(ROOT + '/loans/{loanId}')
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     def "should return status 404 during retrieving by id when loan does not belong to Marek"() {
@@ -64,25 +64,25 @@ class LoanControllerITSpec extends BaseSpringBootITSpec {
             }
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader(OTHER_CUSTOMER_ID))
-                    .pathParam('loanId', MAREK_LOAN_ID)
-                    .when()
-                    .get(ROOT + '/loans/{loanId}')
-                    .then()
-                    .statusCode(HttpStatus.SC_NOT_FOUND)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader(OTHER_CUSTOMER_ID))
+                .pathParam('loanId', MAREK_LOAN_ID)
+            .when()
+                .get(ROOT + '/loans/{loanId}')
+            .then()
+                .statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     def "should return loan belongs to Marek by id"() {
         expect:
             given()
-                    .contentType(API_CONTENT_TYPE)
-                    .header(customerHeader(MAREK_ID))
-                    .pathParam('loanId', MAREK_LOAN_ID)
-                    .when()
-                    .get(ROOT + '/loans/{loanId}')
-                    .then()
-                    .statusCode(HttpStatus.SC_OK)
+                .contentType(API_CONTENT_TYPE)
+                .header(customerHeader(MAREK_ID))
+                .pathParam('loanId', MAREK_LOAN_ID)
+            .when()
+                .get(ROOT + '/loans/{loanId}')
+            .then()
+                .statusCode(HttpStatus.SC_OK)
     }
 }
 
